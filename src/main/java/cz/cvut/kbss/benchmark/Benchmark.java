@@ -17,7 +17,7 @@ public class Benchmark {
     private long fastestTime = System.currentTimeMillis();
     private long slowestTime = 0L;
 
-    public Benchmark(BenchmarkRunner runner, String[] args) {
+    public Benchmark(BenchmarkRunner runner, String... args) {
         this.runner = Objects.requireNonNull(runner);
         this.configuration = new Configuration(Objects.requireNonNull(args));
     }
@@ -45,9 +45,11 @@ public class Benchmark {
             LOG.debug("Running {} round {}.", isWarmup(round) ? "warm-up" : "measured",
                     isWarmup(round) ? (round + 1) : (round + 1 - configuration.getWarmups()));
             try {
+
                 long start = System.nanoTime();
                 runner.execute();
                 long end = System.nanoTime();
+
                 if (!isWarmup(round)) {
                     final long duration = end - start;
                     this.totalTime += duration;
@@ -78,6 +80,6 @@ public class Benchmark {
         LOG.info("Average round time: {} ms.", totalTime / configuration.getRounds() / 1000);
         LOG.info("Fastest round time: {} ms.", fastestTime / 1000);
         LOG.info("Slowest round time: {} ms.", slowestTime / 1000);
-        LOG.info("***********************************************");
+        LOG.info("**********************************************");
     }
 }
