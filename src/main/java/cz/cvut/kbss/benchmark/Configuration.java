@@ -2,10 +2,14 @@ package cz.cvut.kbss.benchmark;
 
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class Configuration {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
 
     private static final OptionParser OPTION_PARSER = initOptionParser();
 
@@ -29,11 +33,13 @@ public class Configuration {
 
     /**
      * Prints help for the configuration options.
-     *
-     * @throws IOException When access to output stream fails
      */
-    public static void printHelp() throws IOException {
-        OPTION_PARSER.printHelpOn(System.out);
+    public static void printHelp() {
+        try {
+            OPTION_PARSER.printHelpOn(System.out);
+        } catch (IOException e) {
+            LOG.error("Unable to print help to stdout.", e);
+        }
     }
 
     public int getWarmups() {

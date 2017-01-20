@@ -26,6 +26,7 @@ public class Benchmark {
      * Executes the benchmark.
      */
     public void execute() {
+        LOG.info("Running benchmark.");
         LOG.debug("Running global setup.");
         runner.setUpBeforeBenchmark();
         try {
@@ -34,6 +35,7 @@ public class Benchmark {
             LOG.debug("Running global teardown.");
             runner.tearDownAfterBenchmark();
         }
+        LOG.info("Benchmark execution finished.");
         printStatistics();
     }
 
@@ -60,6 +62,8 @@ public class Benchmark {
                         this.fastestTime = duration;
                     }
                 }
+            } catch (RuntimeException e) {
+                LOG.error("Exception caught: {}.", e.getMessage());
             } finally {
                 LOG.trace("Running round teardown.");
                 runner.tearDown();
@@ -72,14 +76,15 @@ public class Benchmark {
     }
 
     private void printStatistics() {
+        final int nanosToMillis = 1_000_000;
         LOG.info("**********************************************");
         LOG.info("Benchmark results:");
         LOG.info("Warm-up rounds: {}.", configuration.getWarmups());
         LOG.info("Measured rounds: {}.", configuration.getRounds());
-        LOG.info("Total measured time: {} ms.", totalTime / 1000);
-        LOG.info("Average round time: {} ms.", totalTime / configuration.getRounds() / 1000);
-        LOG.info("Fastest round time: {} ms.", fastestTime / 1000);
-        LOG.info("Slowest round time: {} ms.", slowestTime / 1000);
+        LOG.info("Total measured time: {} ms.", totalTime / nanosToMillis);
+        LOG.info("Average round time: {} ms.", totalTime / configuration.getRounds() / nanosToMillis);
+        LOG.info("Fastest round time: {} ms.", fastestTime / nanosToMillis);
+        LOG.info("Slowest round time: {} ms.", slowestTime / nanosToMillis);
         LOG.info("**********************************************");
     }
 }
