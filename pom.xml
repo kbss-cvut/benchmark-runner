@@ -55,6 +55,14 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <!--  Enabling the use of FTP  -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.12</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -63,4 +71,22 @@
             </plugin>
         </plugins>
     </build>
+
+    <organization>
+        <name>Czech Technical University in Prague, Knowledge Based and Software Systems Group</name>
+        <url>http://kbss.felk.cvut.cz</url>
+    </organization>
+
+    <scm>
+        <url>https://kbss.felk.cvut.cz/gitblit/summary/benchmark-runner.git</url>
+        <connection>scm:git:https://kbss.felk.cvut.cz/git/benchmark-runner.git</connection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>kbss</id>
+            <name>KBSS Maven 2 Repository</name>
+            <url>scp://kbss.felk.cvut.cz/var/www/m2repo</url>
+        </repository>
+    </distributionManagement>
 </project>
