@@ -42,7 +42,7 @@ public class Benchmark {
     private void executeRounds() {
         final int totalRounds = configuration.getWarmups() + configuration.getRounds();
         for (int round = 0; round < totalRounds; round++) {
-            LOG.trace("Running round setup");
+            LOG.trace("Running round setup.");
             runner.setUp();
             LOG.debug("Running {} round {}.", isWarmup(round) ? "warm-up" : "measured",
                     isWarmup(round) ? (round + 1) : (round + 1 - configuration.getWarmups()));

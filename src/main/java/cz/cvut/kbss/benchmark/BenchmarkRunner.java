@@ -16,9 +16,12 @@ public abstract class BenchmarkRunner {
      * <p>
      * Setup method runtime is not counted in the measured benchmark times.
      * <p>
-     * Default implementation does nothing.
+     * Default implementation runs garbage collection to clean up heap before executing the round.
      */
     public void setUp() {
+        // Execute garbage collection to clear up memory
+        System.gc();
+        System.gc();
     }
 
     /**
