@@ -9,6 +9,8 @@ public class Benchmark {
 
     private static final Logger LOG = LoggerFactory.getLogger(Benchmark.class);
 
+    private static final int NANOS_TO_MILLIS = 1_000_000;
+
     private final Configuration configuration;
 
     private final BenchmarkRunner runner;
@@ -76,15 +78,18 @@ public class Benchmark {
     }
 
     private void printStatistics() {
-        final int nanosToMillis = 1_000_000;
         LOG.info("**********************************************");
         LOG.info("Benchmark results:");
         LOG.info("Warm-up rounds: {}.", configuration.getWarmups());
         LOG.info("Measured rounds: {}.", configuration.getRounds());
-        LOG.info("Total measured time: {} ms.", totalTime / nanosToMillis);
-        LOG.info("Average round time: {} ms.", totalTime / configuration.getRounds() / nanosToMillis);
-        LOG.info("Fastest round time: {} ms.", fastestTime / nanosToMillis);
-        LOG.info("Slowest round time: {} ms.", slowestTime / nanosToMillis);
+        LOG.info("Total measured time: {} ms.", toMillis(totalTime));
+        LOG.info("Average round time: {} ms.", toMillis(totalTime / configuration.getRounds()));
+        LOG.info("Fastest round time: {} ms.", toMillis(fastestTime));
+        LOG.info("Slowest round time: {} ms.", toMillis(slowestTime));
         LOG.info("**********************************************");
+    }
+
+    private static long toMillis(long nanos) {
+        return nanos / NANOS_TO_MILLIS;
     }
 }

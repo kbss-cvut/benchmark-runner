@@ -3,12 +3,12 @@ package cz.cvut.kbss.benchmark;
 /**
  * This interface is intended to be implemented by the concrete benchmarks.
  */
-public abstract class BenchmarkRunner {
+public interface BenchmarkRunner {
 
     /**
      * Setup method executed only once, before the whole benchmark (i.e. even before the warm-up rounds).
      */
-    public void setUpBeforeBenchmark() {
+    default void setUpBeforeBenchmark() {
     }
 
     /**
@@ -18,7 +18,7 @@ public abstract class BenchmarkRunner {
      * <p>
      * Default implementation runs garbage collection to clean up heap before executing the round.
      */
-    public void setUp() {
+    default void setUp() {
         // Execute garbage collection to clear up memory
         System.gc();
         System.gc();
@@ -31,13 +31,13 @@ public abstract class BenchmarkRunner {
      * <p>
      * Default implementation does nothing.
      */
-    public void tearDown() {
+    default void tearDown() {
     }
 
     /**
      * Teardown method executed only once, after the whole benchmark.
      */
-    public void tearDownAfterBenchmark() {
+    default void tearDownAfterBenchmark() {
     }
 
     /**
@@ -45,5 +45,5 @@ public abstract class BenchmarkRunner {
      * <p>
      * This method is called repeatedly every round.
      */
-    public abstract void execute();
+    void execute();
 }
