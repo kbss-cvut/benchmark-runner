@@ -3,6 +3,10 @@ package cz.cvut.kbss.benchmark;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
 public class Benchmark {
@@ -19,6 +23,8 @@ public class Benchmark {
     private long fastestTime = System.currentTimeMillis();
     private long slowestTime = 0L;
 
+    private File outputFile;
+
     public Benchmark(BenchmarkRunner runner, String... args) {
         this.runner = Objects.requireNonNull(runner);
         this.configuration = new Configuration(Objects.requireNonNull(args));
@@ -29,6 +35,7 @@ public class Benchmark {
      */
     public void execute() {
         LOG.info("Running benchmark.");
+        initRawOutputFile();
         LOG.debug("Running global setup.");
         runner.setUpBeforeBenchmark();
         try {
@@ -39,6 +46,18 @@ public class Benchmark {
         }
         LOG.info("Benchmark execution finished.");
         printStatistics();
+    }
+
+    private void initRawOutputFile() {
+        if (configuration.getOutputFile() == null) {
+            return;
+        }
+        this.outputFile = new File(configuration.getOutputFile());
+        try {
+            outputFile.createNewFile();
+        } catch (IOException e) {
+            throw new BenchmarkException("Unable to create output file " + configuration.getOutputFile());
+        }
     }
 
     private void executeRounds() {
@@ -63,6 +82,7 @@ public class Benchmark {
                     if (duration < fastestTime) {
                         this.fastestTime = duration;
                     }
+                    outputDuration(duration);
                 }
             } catch (RuntimeException e) {
                 LOG.error("Exception caught: {}.", e.getMessage());
@@ -75,6 +95,23 @@ public class Benchmark {
 
     private boolean isWarmup(int round) {
         return round < configuration.getWarmups();
+    }
+
+    /**
+     * Outputs round duration in milliseconds into the output file (if configured).
+     *
+     * @param duration Duration in nanoseconds
+     */
+    private void outputDuration(long duration) {
+        if (outputFile == null) {
+            return;
+        }
+        try {
+            final String line = Long.toString(toMillis(duration)) + System.lineSeparator();
+            Files.write(outputFile.toPath(), line.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new BenchmarkException("Unable to write round duration to file " + outputFile);
+        }
     }
 
     private void printStatistics() {

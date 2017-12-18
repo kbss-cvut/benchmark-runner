@@ -40,10 +40,12 @@ The benchmark accepts two arguments:
 * **-w** represents number of warm-up rounds. Warm-up rounds are intended to let the JVM stabilize, perform code optimizations and JIT compilations,
 so that these do not skew results of the measured rounds. Defaults to _20_.
 * **-r** represents number of measured rounds. Defaults to _500_.
+* **-o** file to which running times of all results should be written. Can be used to calculate additional statistics from the measured data.
 
 
 ### Example
 
-`java -jar benchmark.jar -w 10 -r 100`
+`java -jar benchmark.jar -w 10 -r 100 -o benchmark.log`
 
-Will execute benchmark with 10 warm-up rounds and 100 measured rounds.
+Will execute benchmark with 10 warm-up rounds and 100 measured rounds. Execution time of each round will be written into file `benchmark.log`
+(each round on a separate line).

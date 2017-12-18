@@ -6,6 +6,11 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
 
 public class BenchmarkTest {
@@ -66,5 +71,15 @@ public class BenchmarkTest {
         order.verify(runner).execute();
         order.verify(runner).tearDown();
         order.verify(runner).tearDownAfterBenchmark();
+    }
+
+    @Test
+    public void benchmarkOutputsRunExecutionTimesWhenOutputFileIsConfigured() throws Exception {
+        final File outputFile = File.createTempFile("benchmark", ".txt");
+        outputFile.deleteOnExit();
+        this.benchmark = new Benchmark(runner, "-w", "1", "-r", "2", "-o", outputFile.getPath());
+        benchmark.execute();
+        final List<String> content = Files.readAllLines(outputFile.toPath());
+        assertFalse(content.isEmpty());
     }
 }
