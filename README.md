@@ -7,6 +7,7 @@ The runner measures the following statistics:
 * Fastest round,
 * Slowest round,
 * Average round execution time,
+* Q1, median and Q3 of execution times,
 * Total time execution (of measured rounds).
 
 ## How to Use

@@ -7,27 +7,26 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Benchmark {
 
     private static final Logger LOG = LoggerFactory.getLogger(Benchmark.class);
 
-    private static final int NANOS_TO_MILLIS = 1_000_000;
-
     private final Configuration configuration;
 
     private final BenchmarkRunner runner;
 
-    private long totalTime = 0L;
-    private long fastestTime = System.currentTimeMillis();
-    private long slowestTime = 0L;
+    private List<Long> executionTimes;
 
     private File outputFile;
 
     public Benchmark(BenchmarkRunner runner, String... args) {
         this.runner = Objects.requireNonNull(runner);
         this.configuration = new Configuration(Objects.requireNonNull(args));
+        this.executionTimes = new ArrayList<>(configuration.getRounds());
     }
 
     /**
@@ -75,13 +74,7 @@ public class Benchmark {
 
                 if (!isWarmup(round)) {
                     final long duration = end - start;
-                    this.totalTime += duration;
-                    if (duration > slowestTime) {
-                        this.slowestTime = duration;
-                    }
-                    if (duration < fastestTime) {
-                        this.fastestTime = duration;
-                    }
+                    executionTimes.add(duration);
                     outputDuration(duration);
                 }
             } catch (RuntimeException e) {
@@ -107,7 +100,7 @@ public class Benchmark {
             return;
         }
         try {
-            final String line = Long.toString(toMillis(duration)) + System.lineSeparator();
+            final String line = Double.toString(Statistics.nanosToMillis(duration)) + System.lineSeparator();
             Files.write(outputFile.toPath(), line.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             throw new BenchmarkException("Unable to write round duration to file " + outputFile);
@@ -115,18 +108,12 @@ public class Benchmark {
     }
 
     private void printStatistics() {
+        final Statistics statistics = new Statistics(executionTimes);
         LOG.info("**********************************************");
         LOG.info("Benchmark results:");
         LOG.info("Warm-up rounds: {}.", configuration.getWarmups());
         LOG.info("Measured rounds: {}.", configuration.getRounds());
-        LOG.info("Total measured time: {} ms.", toMillis(totalTime));
-        LOG.info("Average round time: {} ms.", toMillis(totalTime / configuration.getRounds()));
-        LOG.info("Fastest round time: {} ms.", toMillis(fastestTime));
-        LOG.info("Slowest round time: {} ms.", toMillis(slowestTime));
+        statistics.print(LOG);
         LOG.info("**********************************************");
-    }
-
-    private static long toMillis(long nanos) {
-        return nanos / NANOS_TO_MILLIS;
     }
 }
