@@ -42,7 +42,7 @@ public class Statistics {
      */
     private void calculate() {
         Collections.sort(values);
-        this.total = values.stream().mapToLong(Long::longValue).sum();
+        this.total = values.stream().reduce(0L, Long::sum);
         this.average = total / values.size();
         this.fastest = values.get(0);
         this.slowest = values.get(values.size() - 1);
