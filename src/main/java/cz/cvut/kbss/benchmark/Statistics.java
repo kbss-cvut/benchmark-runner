@@ -22,6 +22,7 @@ public class Statistics {
 
     public Statistics(List<Long> values) {
         this.values = Objects.requireNonNull(values);
+        assert !values.isEmpty();
     }
 
     public void print(Logger logger) {
@@ -47,8 +48,12 @@ public class Statistics {
         this.slowest = values.get(values.size() - 1);
         this.median = median(values);
         if (values.size() % 2 != 0) {
-            this.qOne = median(values.subList(0, values.indexOf(median)));
-            this.qThree = median(values.subList(values.indexOf(median) + 1, values.size()));
+            if (values.size() == 1) {
+                this.qOne = this.qThree = median;
+            } else {
+                this.qOne = median(values.subList(0, values.indexOf(median)));
+                this.qThree = median(values.subList(values.indexOf(median) + 1, values.size()));
+            }
         } else {
             this.qOne = median(values.subList(0, values.size() / 2));
             this.qThree = median(values.subList(values.size() / 2, values.size()));
@@ -57,6 +62,9 @@ public class Statistics {
 
     private long median(List<Long> lst) {
         final int length = lst.size();
+        if (length == 1) {
+            return lst.get(0);
+        }
         if (length % 2 != 0) {
             return lst.get(length / 2);
         } else {

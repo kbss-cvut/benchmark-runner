@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -52,5 +53,15 @@ public class StatisticsTest {
         assertEquals(6L, getValue("median"));   // median 5.5, mathematically rounded to 6
         assertEquals(3L, getValue("qOne"));
         assertEquals(7L, getValue("qThree"));
+    }
+
+    @Test
+    public void dealsWithListWithSingleValueOnly() throws Exception {
+        final long value = 117L;
+        this.statistics = new Statistics(Collections.singletonList(value));
+        statistics.print(logger);
+        assertEquals(value, getValue("median"));
+        assertEquals(value, getValue("qOne"));
+        assertEquals(value, getValue("qThree"));
     }
 }
