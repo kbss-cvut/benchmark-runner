@@ -2,6 +2,7 @@ package cz.cvut.kbss.benchmark;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 public class StatisticsTest {
 
@@ -63,5 +65,21 @@ public class StatisticsTest {
         assertEquals(value, getValue("median"));
         assertEquals(value, getValue("qOne"));
         assertEquals(value, getValue("qThree"));
+    }
+
+    @Test
+    public void leavesResultsAtZeroAndPrintsErrorMessageWhenNoValuesAreProvided() throws Exception {
+        this.statistics = new Statistics(Collections.emptyList());
+        statistics.print(logger);
+        assertEquals(0L, getValue("total"));
+        assertEquals(0L, getValue("fastest"));
+        assertEquals(0L, getValue("slowest"));
+        assertEquals(0L, getValue("average"));
+        assertEquals(0L, getValue("median"));
+        assertEquals(0L, getValue("qOne"));
+        assertEquals(0L, getValue("qThree"));
+        final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(logger).error(captor.capture());
+        assertEquals("No values available for statistics.", captor.getValue());
     }
 }

@@ -22,11 +22,10 @@ public class Statistics {
 
     public Statistics(List<Long> values) {
         this.values = Objects.requireNonNull(values);
-        assert !values.isEmpty();
     }
 
     public void print(Logger logger) {
-        calculate();
+        calculate(logger);
         logger.info("Total measured time: {} ms.", nanosToMillis(total));
         logger.info("Average round time: {} ms.", nanosToMillis(average));
         logger.info("Fastest round time: {} ms.", nanosToMillis(fastest));
@@ -40,7 +39,11 @@ public class Statistics {
      * Calculation of quartiles is done using Method 1 from
      * <a href="https://en.wikipedia.org/wiki/Quartile">https://en.wikipedia.org/wiki/Quartile</a>.
      */
-    private void calculate() {
+    private void calculate(Logger logger) {
+        if (values.isEmpty()) {
+            logger.error("No values available for statistics.");
+            return;
+        }
         Collections.sort(values);
         this.total = values.stream().reduce(0L, Long::sum);
         this.average = total / values.size();
