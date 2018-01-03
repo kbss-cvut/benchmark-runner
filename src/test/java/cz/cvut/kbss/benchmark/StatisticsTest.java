@@ -82,4 +82,12 @@ public class StatisticsTest {
         verify(logger).error(captor.capture());
         assertEquals("No values available for statistics.", captor.getValue());
     }
+
+    @Test
+    public void calculatesStandardDeviationRoundedToTwoDecimalSpaces() throws Exception{
+        final List<Long> values = Arrays.asList(600L, 470L, 170L, 430L, 300L);
+        this.statistics = new Statistics(values);
+        statistics.print(logger);
+        assertEquals(147, getValue("standardDeviation"));
+    }
 }

@@ -19,6 +19,7 @@ public class Statistics {
     private long median;
     private long qOne;
     private long qThree;
+    private long standardDeviation;
 
     public Statistics(List<Long> values) {
         this.values = Objects.requireNonNull(values);
@@ -33,6 +34,7 @@ public class Statistics {
         logger.info("Q1: {} ms.", nanosToMillis(qOne));
         logger.info("Median: {} ms.", nanosToMillis(median));
         logger.info("Q3: {} ms.", nanosToMillis(qThree));
+        logger.info("Standard deviation: {} ms.", nanosToMillis(standardDeviation));
     }
 
     /**
@@ -61,6 +63,7 @@ public class Statistics {
             this.qOne = median(values.subList(0, values.size() / 2));
             this.qThree = median(values.subList(values.size() / 2, values.size()));
         }
+        this.standardDeviation = calculateStandardDeviation();
     }
 
     private long median(List<Long> lst) {
@@ -73,6 +76,14 @@ public class Statistics {
         } else {
             return Math.round((lst.get(length / 2 - 1) + lst.get(length / 2)) / 2.0);
         }
+    }
+
+    private long calculateStandardDeviation() {
+        double sum = 0.0;
+        for (Long v : values) {
+            sum += Math.pow(v - average, 2);
+        }
+        return Math.round(Math.sqrt(sum / values.size()));
     }
 
     public static double nanosToMillis(long nanos) {
