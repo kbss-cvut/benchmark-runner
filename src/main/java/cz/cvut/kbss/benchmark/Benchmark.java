@@ -27,6 +27,7 @@ public class Benchmark {
         this.runner = Objects.requireNonNull(runner);
         this.configuration = new Configuration(Objects.requireNonNull(args));
         this.executionTimes = new ArrayList<>(configuration.getRounds());
+        runner.setConfiguration(configuration);
     }
 
     /**

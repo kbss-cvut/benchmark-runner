@@ -46,4 +46,11 @@ public interface BenchmarkRunner {
      * This method is called repeatedly every round.
      */
     void execute();
+
+    /**
+     * Allows the runner to be provided with access to the benchmark configuration.
+     *
+     * @param configuration Benchmark configuration
+     */
+    void setConfiguration(Configuration configuration);
 }
