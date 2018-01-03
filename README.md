@@ -8,7 +8,8 @@ The runner measures the following statistics:
 * Slowest round,
 * Average round execution time,
 * Q1, median and Q3 of execution times,
-* Total time execution (of measured rounds).
+* Total time execution (of measured rounds),
+* Standard deviation.
 
 ## How to Use
 
@@ -36,13 +37,14 @@ unexpected events occur.
 
 ## Configuration
 
-The benchmark accepts two arguments:
+The benchmark accepts three arguments:
 
 * **-w** represents number of warm-up rounds. Warm-up rounds are intended to let the JVM stabilize, perform code optimizations and JIT compilations,
 so that these do not skew results of the measured rounds. Defaults to _20_.
 * **-r** represents number of measured rounds. Defaults to _500_.
 * **-o** file to which running times of all results should be written. Can be used to calculate additional statistics from the measured data.
 
+Additional parameters can be added by registering them in the `Configuration` class.
 
 ### Example
 
