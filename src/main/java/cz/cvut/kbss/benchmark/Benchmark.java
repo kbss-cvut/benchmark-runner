@@ -82,7 +82,7 @@ public class Benchmark {
                     outputDuration(duration);
                 }
             } catch (RuntimeException e) {
-                LOG.error("Exception caught: {}.", e.getMessage());
+                LOG.error("Exception caught: {}.", e);
             } finally {
                 LOG.trace("Running round teardown.");
                 runner.tearDown();
