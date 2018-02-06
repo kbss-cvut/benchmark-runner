@@ -53,4 +53,13 @@ public interface BenchmarkRunner {
      * @param configuration Benchmark configuration
      */
     void setConfiguration(Configuration configuration);
+
+    /**
+     * Callback executed just before the first measured round (after the setup).
+     *
+     * Default implementation does nothing.
+     */
+    default void beforeFirstMeasured() {
+        // Do nothing
+    }
 }

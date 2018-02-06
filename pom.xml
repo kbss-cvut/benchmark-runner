@@ -6,7 +6,7 @@
 
     <groupId>cz.cvut.kbss.benchmark</groupId>
     <artifactId>benchmark-runner</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 
     <name>BenchmarkRunner</name>
 

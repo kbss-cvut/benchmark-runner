@@ -82,4 +82,18 @@ public class BenchmarkTest {
         final List<String> content = Files.readAllLines(outputFile.toPath());
         assertFalse(content.isEmpty());
     }
+
+    @Test
+    public void benchmarkRunsBeforeFirstMeasuredCallbackBeforeExecutionOfFirstMeasuredRound() {
+        this.benchmark = new Benchmark(runner, "-w", "1", "-r", "1");
+        benchmark.execute();
+        final InOrder inOrder = inOrder(runner);
+        // Warmup
+        inOrder.verify(runner).setUp();
+        inOrder.verify(runner).execute();
+        // Execution
+        inOrder.verify(runner).setUp();
+        inOrder.verify(runner).beforeFirstMeasured();
+        inOrder.verify(runner).execute();
+    }
 }

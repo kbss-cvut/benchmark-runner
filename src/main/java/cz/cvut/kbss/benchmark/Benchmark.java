@@ -67,6 +67,9 @@ public class Benchmark {
             runner.setUp();
             LOG.debug("Running {} round {}.", isWarmup(round) ? "warm-up" : "measured",
                     isWarmup(round) ? (round + 1) : (round + 1 - configuration.getWarmups()));
+            if (isFirstMeasured(round)) {
+                runner.beforeFirstMeasured();
+            }
             try {
 
                 long start = System.nanoTime();
@@ -89,6 +92,10 @@ public class Benchmark {
 
     private boolean isWarmup(int round) {
         return round < configuration.getWarmups();
+    }
+
+    private boolean isFirstMeasured(int round) {
+        return round == configuration.getWarmups();
     }
 
     /**
