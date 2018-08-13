@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The benchmark executor.
+ * <p>
+ * It is initialized with the benchmark runner to use and command line arguments for configuration and runs the
+ * benchmark rounds.
+ */
 public class Benchmark {
 
     private static final Logger LOG = LoggerFactory.getLogger(Benchmark.class);
