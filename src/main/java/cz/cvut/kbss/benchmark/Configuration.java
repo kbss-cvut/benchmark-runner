@@ -15,9 +15,9 @@ public class Configuration {
 
     private final OptionSet options;
 
-    private int warmups;
-    private int rounds;
-    private String outputFile;
+    private final int warmups;
+    private final int rounds;
+    private final String outputFile;
 
     public Configuration(String[] args) {
         this.options = OPTION_PARSER.parse(args);
@@ -29,11 +29,11 @@ public class Configuration {
     private static OptionParser initOptionParser() {
         final OptionParser p = new OptionParser();
         p.accepts(Parameters.WARMUPS.getArg(), Parameters.WARMUPS.getDescription()).withRequiredArg()
-         .ofType(Integer.class).defaultsTo(Constants.WARMUP_ROUNDS);
+                .ofType(Integer.class).defaultsTo(Constants.WARMUP_ROUNDS);
         p.accepts(Parameters.ROUNDS.getArg(), Parameters.ROUNDS.getDescription()).withRequiredArg()
-         .ofType(Integer.class).defaultsTo(Constants.ROUNDS);
+                .ofType(Integer.class).defaultsTo(Constants.ROUNDS);
         p.accepts(Parameters.OUTPUT.getArg(), Parameters.OUTPUT.getDescription()).withOptionalArg()
-         .ofType(String.class);
+                .ofType(String.class);
         return p;
     }
 

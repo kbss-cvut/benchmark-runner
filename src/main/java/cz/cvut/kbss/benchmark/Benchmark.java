@@ -25,7 +25,7 @@ public class Benchmark {
 
     private final BenchmarkRunner runner;
 
-    private List<Long> executionTimes;
+    private final List<Long> executionTimes;
 
     private File outputFile;
 
@@ -88,7 +88,7 @@ public class Benchmark {
                     outputDuration(duration);
                 }
             } catch (RuntimeException e) {
-                LOG.error("Exception caught: {}.", e);
+                LOG.error("Exception caught during execution of round {}.", round, e);
             } finally {
                 LOG.trace("Running round teardown.");
                 runner.tearDown();

@@ -1,10 +1,10 @@
 package cz.cvut.kbss.benchmark;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
@@ -12,20 +12,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 public class StatisticsTest {
 
     @Mock
     private Logger logger;
 
     private Statistics statistics;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void calculatesSimpleStatisticsCorrectly() throws Exception {
@@ -84,7 +80,7 @@ public class StatisticsTest {
     }
 
     @Test
-    public void calculatesStandardDeviationRoundedToTwoDecimalSpaces() throws Exception{
+    public void calculatesStandardDeviationRoundedToTwoDecimalSpaces() throws Exception {
         final List<Long> values = Arrays.asList(600L, 470L, 170L, 430L, 300L);
         this.statistics = new Statistics(values);
         statistics.print(logger);
