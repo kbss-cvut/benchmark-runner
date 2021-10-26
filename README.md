@@ -52,3 +52,26 @@ Additional parameters can be added by registering them in the `Configuration` cl
 
 Will execute benchmark with 10 warm-up rounds and 100 measured rounds. Execution time of each round will be written into file `benchmark.log`
 (each round on a separate line).
+
+## Where to Get
+
+Via Maven. The project is published in the KBSS maven repository, so add the following repository configuration:
+```xml
+<repository>
+    <id>KBSS</id>
+    <url>https://kbss.felk.cvut.cz/m2repo</url>
+</repository>
+```
+
+And then use the following dependency:
+```xml
+<dependency>
+    <groupId>cz.cvut.kbss.benchmark</groupId>
+    <artifactId>benchmark-runner</artifactId>
+    <version>0.0.6</version>
+</dependency>
+```
+
+## License
+
+MIT
