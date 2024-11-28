@@ -11,6 +11,11 @@ The runner measures the following statistics:
 * Total time execution (of measured rounds),
 * Standard deviation.
 
+
+## Requirements
+
+* Java 17 or later
+
 ## How to Use
 
 To use this library, two things are required:
@@ -68,7 +73,7 @@ And then use the following dependency:
 <dependency>
     <groupId>cz.cvut.kbss.benchmark</groupId>
     <artifactId>benchmark-runner</artifactId>
-    <version>0.0.6</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
