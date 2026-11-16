@@ -90,4 +90,9 @@ public class Configuration {
     public <T> T getValue(String option, Class<T> returnType) {
         return returnType.cast(options.valueOf(option));
     }
+
+    public <T> T getValue(String option, Class<T> returnType, T defaultValue) {
+        final Object value = options.valueOf(option);
+        return value != null ? returnType.cast(value) : defaultValue;
+    }
 }
